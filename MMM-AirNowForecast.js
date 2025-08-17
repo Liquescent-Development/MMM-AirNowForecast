@@ -139,107 +139,105 @@ Module.register("MMM-AirNowForecast", {
             return wrapper;
         }
 
-        // Container for relative positioning
+        // Container for relative positioning (for location)
         const container = document.createElement("div");
         container.style.position = "relative";
+        container.style.width = "100%";
 
         // Get worst current AQI for main display
         const worstCurrent = this.getWorstPollutant(this.currentData);
         
-        // Top section with AQI title and value
-        const topRow = document.createElement("div");
-        topRow.className = "aqi-top-row";
+        // Top section with icon, label, value and status - centered like UV Index
+        const currentDiv = document.createElement("div");
+        currentDiv.className = "aqi-current";
         
-        const titleSpan = document.createElement("span");
-        titleSpan.className = "aqi-title";
-        titleSpan.innerHTML = `<span class="fa fa-lungs"></span> AQI`;
-        topRow.appendChild(titleSpan);
+        const icon = document.createElement("span");
+        icon.className = "aqi-icon fa fa-lungs";
+        currentDiv.appendChild(icon);
+
+        const label = document.createElement("span");
+        label.className = "aqi-label";
+        label.innerHTML = "AQI";
+        currentDiv.appendChild(label);
 
         if (worstCurrent) {
-            const valueSpan = document.createElement("span");
-            valueSpan.className = `aqi-value ${this.getAQIClass(worstCurrent.Category?.Number)}`;
-            valueSpan.innerHTML = worstCurrent.AQI || "N/A";
-            topRow.appendChild(valueSpan);
+            const value = document.createElement("span");
+            value.className = `aqi-value ${this.getAQIClass(worstCurrent.Category?.Number)}`;
+            value.innerHTML = worstCurrent.AQI || "N/A";
+            currentDiv.appendChild(value);
 
-            const statusSpan = document.createElement("span");
-            statusSpan.className = `aqi-status ${this.getAQIClass(worstCurrent.Category?.Number)}`;
-            statusSpan.innerHTML = worstCurrent.Category?.Name || "";
-            topRow.appendChild(statusSpan);
+            const status = document.createElement("span");
+            status.className = `aqi-status ${this.getAQIClass(worstCurrent.Category?.Number)}`;
+            status.innerHTML = worstCurrent.Category?.Name || "";
+            currentDiv.appendChild(status);
         }
 
-        container.appendChild(topRow);
+        container.appendChild(currentDiv);
 
-        // AQI gradient bar
-        const gradientContainer = document.createElement("div");
-        gradientContainer.className = "aqi-gradient-container";
+        // AQI spectrum bar (like UV spectrum bar)
+        const spectrumContainer = document.createElement("div");
+        spectrumContainer.className = "aqi-spectrum-container";
         
-        const gradient = document.createElement("div");
-        gradient.className = "aqi-gradient";
-        gradientContainer.appendChild(gradient);
+        const spectrumBar = document.createElement("div");
+        spectrumBar.className = "aqi-spectrum-bar";
+        spectrumContainer.appendChild(spectrumBar);
 
         if (worstCurrent && worstCurrent.AQI) {
-            const marker = document.createElement("div");
-            marker.className = "aqi-marker";
-            // Position marker based on AQI value (0-200 scale for display)
+            const indicator = document.createElement("div");
+            indicator.className = "aqi-spectrum-indicator";
+            // Position based on AQI value (0-200 scale)
             const position = Math.min((worstCurrent.AQI / 200) * 100, 100);
-            marker.style.left = `${position}%`;
-            marker.innerHTML = "▼";
-            gradientContainer.appendChild(marker);
+            indicator.style.left = `${position}%`;
+            spectrumContainer.appendChild(indicator);
         }
 
-        container.appendChild(gradientContainer);
+        container.appendChild(spectrumContainer);
 
         // Scale labels
-        const scaleLabels = document.createElement("div");
-        scaleLabels.className = "aqi-scale-labels";
-        scaleLabels.innerHTML = `
+        const labels = document.createElement("div");
+        labels.className = "aqi-spectrum-labels";
+        labels.innerHTML = `
             <span>0</span>
             <span>50</span>
             <span>100</span>
             <span>150</span>
             <span>200+</span>
         `;
-        container.appendChild(scaleLabels);
+        container.appendChild(labels);
 
-        // Current pollutant values (horizontal)
+        // Current pollutants (horizontal like UV hourly)
         if (this.currentData) {
-            const currentRow = document.createElement("div");
-            currentRow.className = "aqi-current-row";
+            const pollutantsDiv = document.createElement("div");
+            pollutantsDiv.className = "aqi-pollutants";
             
             const filteredData = this.currentData.filter(item => 
                 item && item.ParameterName && this.config.pollutants.includes(item.ParameterName)
             );
 
-            filteredData.forEach((item, index) => {
-                if (index > 0) {
-                    const spacer = document.createElement("span");
-                    spacer.className = "aqi-spacer";
-                    currentRow.appendChild(spacer);
-                }
-
-                const pollutantGroup = document.createElement("div");
-                pollutantGroup.className = "aqi-pollutant-group";
+            filteredData.forEach(item => {
+                const pollutantItem = document.createElement("div");
+                pollutantItem.className = "aqi-pollutant-item";
                 
                 const value = document.createElement("div");
                 value.className = `aqi-pollutant-value ${this.getAQIClass(item.Category?.Number)}`;
                 value.innerHTML = item.AQI || "N/A";
-                pollutantGroup.appendChild(value);
+                pollutantItem.appendChild(value);
 
                 const name = document.createElement("div");
                 name.className = "aqi-pollutant-name";
                 name.innerHTML = this.pollutantDisplayNames[item.ParameterName] || item.ParameterName;
-                pollutantGroup.appendChild(name);
+                pollutantItem.appendChild(name);
 
-                currentRow.appendChild(pollutantGroup);
+                pollutantsDiv.appendChild(pollutantItem);
             });
 
-            container.appendChild(currentRow);
+            container.appendChild(pollutantsDiv);
         }
 
-        // 5-day forecast
+        // 5-day forecast (like UV daily forecast)
         if (this.config.showForecast && this.forecastData) {
-            const forecastContainer = document.createElement("div");
-            forecastContainer.className = "aqi-forecast-container";
+            const forecastDiv = document.createElement("div");
+            forecastDiv.className = "aqi-forecast";
             
             const forecastByDate = this.groupForecastByDate(this.forecastData);
             const dates = Object.keys(forecastByDate).sort().slice(0, 5);
@@ -249,24 +247,24 @@ Module.register("MMM-AirNowForecast", {
                 const worstItem = this.getWorstPollutant(dayData);
                 
                 if (worstItem) {
-                    const dayGroup = document.createElement("div");
-                    dayGroup.className = "aqi-day-group";
+                    const dayDiv = document.createElement("div");
+                    dayDiv.className = "aqi-forecast-day";
                     
-                    const dayName = document.createElement("div");
-                    dayName.className = "aqi-day-name";
-                    dayName.innerHTML = this.getDayShortName(date);
-                    dayGroup.appendChild(dayName);
+                    const label = document.createElement("div");
+                    label.className = "aqi-forecast-label";
+                    label.innerHTML = this.getDayShortName(date);
+                    dayDiv.appendChild(label);
 
-                    const dayValue = document.createElement("div");
-                    dayValue.className = `aqi-day-value ${this.getAQIClass(worstItem.Category?.Number)}`;
-                    dayValue.innerHTML = worstItem.AQI || "N/A";
-                    dayGroup.appendChild(dayValue);
+                    const value = document.createElement("div");
+                    value.className = `aqi-forecast-value ${this.getAQIClass(worstItem.Category?.Number)}`;
+                    value.innerHTML = worstItem.AQI || "N/A";
+                    dayDiv.appendChild(value);
 
-                    forecastContainer.appendChild(dayGroup);
+                    forecastDiv.appendChild(dayDiv);
                 }
             });
 
-            container.appendChild(forecastContainer);
+            container.appendChild(forecastDiv);
         }
 
         // Location (positioned absolutely in top-right)

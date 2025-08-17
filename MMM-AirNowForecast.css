@@ -1,137 +1,150 @@
 .aqi-wrapper {
-    font-family: "Roboto Condensed", sans-serif;
-    padding: 0;
-}
-
-/* Top row with title and main value */
-.aqi-top-row {
     display: flex;
-    align-items: baseline;
-    margin-bottom: 5px;
+    flex-direction: column;
+    align-items: center;
     font-size: 16px;
+    line-height: 1.5;
+    width: 100%;
 }
 
-.aqi-title {
+/* Top row with icon, title, value and status - centered */
+.aqi-current {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.aqi-icon {
+    font-size: 18px;
+    opacity: 0.6;
+}
+
+.aqi-label {
+    opacity: 0.8;
+    margin-right: 4px;
     color: #999;
-    margin-right: 12px;
-}
-
-.aqi-title .fa {
-    margin-right: 3px;
-    font-size: 14px;
 }
 
 .aqi-value {
-    font-size: 24px;
-    font-weight: 300;
-    margin-right: 12px;
+    font-weight: 400;
+    font-size: 18px;
+    margin-right: 8px;
 }
 
 .aqi-status {
-    font-size: 16px;
-    font-weight: 300;
+    font-size: 14px;
+    opacity: 0.8;
 }
 
 /* AQI gradient bar */
-.aqi-gradient-container {
+.aqi-spectrum-container {
+    width: 200px;
+    margin: 8px auto;
     position: relative;
-    margin-bottom: 2px;
 }
 
-.aqi-gradient {
-    height: 10px;
-    border-radius: 5px;
+.aqi-spectrum-bar {
+    height: 8px;
+    border-radius: 4px;
     background: linear-gradient(to right, 
         #00e400 0%,      /* Good - Green */
-        #00e400 16.66%,  /* Good end */
-        #ffff00 16.66%,  /* Moderate - Yellow */
-        #ffff00 33.33%,  /* Moderate end */
-        #ff7e00 33.33%,  /* USG - Orange */
-        #ff7e00 50%,     /* USG end */
-        #ff0000 50%,     /* Unhealthy - Red */
-        #ff0000 66.66%,  /* Unhealthy end */
-        #8f3f97 66.66%,  /* Very Unhealthy - Purple */
-        #8f3f97 83.33%,  /* Very Unhealthy end */
-        #7e0023 83.33%,  /* Hazardous - Maroon */
-        #7e0023 100%     /* Hazardous end */
+        #00e400 25%,     /* Good end at 50 */
+        #ffff00 25%,     /* Moderate - Yellow */
+        #ffff00 50%,     /* Moderate end at 100 */
+        #ff7e00 50%,     /* USG - Orange */
+        #ff7e00 75%,     /* USG end at 150 */
+        #ff0000 75%,     /* Unhealthy - Red start */
+        #ff0000 100%     /* Simplified for 0-200 scale */
     );
+    opacity: 0.9;
 }
 
-.aqi-marker {
+.aqi-spectrum-indicator {
     position: absolute;
-    top: -5px;
-    font-size: 12px;
-    color: white;
+    top: -2px;
+    width: 0;
+    height: 0;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 6px solid #fff;
     transform: translateX(-50%);
-    text-shadow: 0 0 3px rgba(0,0,0,0.8);
+    transition: left 0.3s ease;
 }
 
-/* Scale labels */
-.aqi-scale-labels {
+.aqi-spectrum-labels {
     display: flex;
     justify-content: space-between;
+    margin-top: 4px;
     font-size: 10px;
+    opacity: 1;
     color: #666;
-    margin-bottom: 8px;
 }
 
-/* Current pollutant values row */
-.aqi-current-row {
+/* Current pollutant values (horizontal like UV hourly) */
+.aqi-pollutants {
     display: flex;
+    flex-direction: row;
     justify-content: center;
+    gap: 20px;
+    width: auto;
+    margin-top: 0;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-top: 1px solid #666;
+    border-bottom: 1px solid #666;
+}
+
+.aqi-pollutant-item {
+    display: flex;
+    flex-direction: column;
     align-items: center;
-    margin-bottom: 8px;
-    padding-top: 5px;
-    border-top: 1px solid rgba(255,255,255,0.1);
-}
-
-.aqi-pollutant-group {
-    text-align: center;
-    margin: 0 10px;
-}
-
-.aqi-pollutant-value {
-    font-size: 18px;
-    font-weight: 300;
-    margin-bottom: 1px;
+    gap: 4px;
+    min-width: 35px;
 }
 
 .aqi-pollutant-name {
-    font-size: 10px;
+    font-size: 14px;
+    opacity: 1;
     color: #999;
-    text-transform: uppercase;
-    letter-spacing: 0.3px;
 }
 
-.aqi-spacer {
-    width: 1px;
-    height: 30px;
-    background: rgba(255,255,255,0.1);
-    margin: 0 10px;
+.aqi-pollutant-value {
+    font-size: 16px;
+    font-weight: 400;
 }
 
 /* 5-day forecast */
-.aqi-forecast-container {
+.aqi-forecast {
     display: flex;
-    justify-content: space-around;
-    padding-top: 5px;
-    border-top: 1px solid rgba(255,255,255,0.1);
+    flex-direction: row;
+    justify-content: center;
+    gap: 20px;
+    width: auto;
+    margin-top: 10px;
+    padding-top: 0;
 }
 
-.aqi-day-group {
-    text-align: center;
-    flex: 1;
+.aqi-forecast-day {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    font-size: 14px;
+    min-width: 35px;
 }
 
-.aqi-day-name {
-    font-size: 11px;
+.aqi-forecast-label {
+    font-size: 14px;
+    opacity: 1;
     color: #999;
-    margin-bottom: 3px;
+    text-align: center;
 }
 
-.aqi-day-value {
+.aqi-forecast-value {
     font-size: 16px;
-    font-weight: 300;
+    font-weight: 400;
 }
 
 /* Location */
