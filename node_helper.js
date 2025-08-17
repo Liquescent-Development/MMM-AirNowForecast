@@ -84,16 +84,31 @@ module.exports = NodeHelper.create({
             }
         );
 
+        Log.log(this.name + ": Fetching current observation from: " + url);
+        
         return fetch(url)
             .then(response => {
                 if (!response.ok) {
+                    Log.error(this.name + ": HTTP error! status: " + response.status);
+                    if (response.status === 401) {
+                        throw new Error("Invalid API key - please check your AirNow API key");
+                    } else if (response.status === 429) {
+                        throw new Error("Rate limit exceeded - too many requests");
+                    }
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
                 return response.json();
             })
             .then(data => {
                 if (!Array.isArray(data)) {
+                    Log.error(this.name + ": Invalid response format - not an array");
+                    Log.error(this.name + ": Response data: " + JSON.stringify(data));
                     throw new Error("Invalid response format from AirNow API");
+                }
+                Log.log(this.name + ": Current observation data received: " + data.length + " items");
+                // Log first item structure for debugging
+                if (data.length > 0) {
+                    Log.log(this.name + ": Sample item: " + JSON.stringify(data[0]));
                 }
                 return data;
             })
@@ -119,16 +134,32 @@ module.exports = NodeHelper.create({
             }
         );
 
+        Log.log(this.name + ": Fetching forecast from: " + url);
+        
         return fetch(url)
             .then(response => {
                 if (!response.ok) {
+                    Log.error(this.name + ": HTTP error! status: " + response.status);
+                    if (response.status === 401) {
+                        throw new Error("Invalid API key - please check your AirNow API key");
+                    } else if (response.status === 429) {
+                        throw new Error("Rate limit exceeded - too many requests");
+                    }
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
                 return response.json();
             })
             .then(data => {
                 if (!Array.isArray(data)) {
+                    Log.error(this.name + ": Invalid forecast format - not an array");
+                    Log.error(this.name + ": Response data: " + JSON.stringify(data));
                     throw new Error("Invalid response format from AirNow API");
+                }
+                
+                Log.log(this.name + ": Forecast data received: " + data.length + " items");
+                // Log first item structure for debugging
+                if (data.length > 0) {
+                    Log.log(this.name + ": Sample forecast item: " + JSON.stringify(data[0]));
                 }
                 
                 const today = new Date().toISOString().split('T')[0];

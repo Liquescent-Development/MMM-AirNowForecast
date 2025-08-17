@@ -170,9 +170,20 @@ Module.register("MMM-AirNowForecast", {
         const container = document.createElement("div");
         container.className = `airnow-${type}`;
 
-        const filteredData = data.filter(item => 
-            this.config.pollutants.includes(item.parameterName.toUpperCase())
-        );
+        // Validate data is an array and filter valid items
+        if (!Array.isArray(data)) {
+            Log.error(this.name + ": Invalid data format - expected array");
+            return null;
+        }
+
+        const filteredData = data.filter(item => {
+            // Check if item has required properties
+            if (!item || !item.parameterName) {
+                Log.warn(this.name + ": Skipping item with missing parameterName");
+                return false;
+            }
+            return this.config.pollutants.includes(item.parameterName.toUpperCase());
+        });
 
         if (filteredData.length === 0) {
             return null;
@@ -184,12 +195,12 @@ Module.register("MMM-AirNowForecast", {
 
             const pollutantSpan = document.createElement("span");
             pollutantSpan.className = "airnow-pollutant light";
-            pollutantSpan.innerHTML = item.parameterName;
+            pollutantSpan.innerHTML = item.parameterName || "Unknown";
             row.appendChild(pollutantSpan);
 
             const valueSpan = document.createElement("span");
             valueSpan.className = "airnow-value bright";
-            const value = item.aqi !== -1 ? item.aqi : "N/A";
+            const value = (item.aqi !== undefined && item.aqi !== -1) ? item.aqi : "N/A";
             valueSpan.innerHTML = this.config.roundValue && value !== "N/A" ? 
                 Math.round(value) : value;
             row.appendChild(valueSpan);
@@ -203,7 +214,7 @@ Module.register("MMM-AirNowForecast", {
 
             const statusText = document.createElement("span");
             statusText.className = "airnow-category light small";
-            statusText.innerHTML = item.categoryName;
+            statusText.innerHTML = item.categoryName || "";
             statusSpan.appendChild(statusText);
 
             row.appendChild(statusSpan);
