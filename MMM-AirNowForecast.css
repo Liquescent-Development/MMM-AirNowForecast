@@ -50,13 +50,15 @@
     border-radius: 4px;
     background: linear-gradient(to right, 
         #00e400 0%,      /* Good - Green */
-        #00e400 25%,     /* Good end at 50 */
-        #ffff00 25%,     /* Moderate - Yellow */
-        #ffff00 50%,     /* Moderate end at 100 */
-        #ff7e00 50%,     /* USG - Orange */
-        #ff7e00 75%,     /* USG end at 150 */
-        #ff0000 75%,     /* Unhealthy - Red start */
-        #ff0000 100%     /* Simplified for 0-200 scale */
+        #00e400 16.67%,  /* Good end at 50 */
+        #ffff00 16.67%,  /* Moderate - Yellow */
+        #ffff00 33.33%,  /* Moderate end at 100 */
+        #ff7e00 33.33%,  /* USG - Orange */
+        #ff7e00 50%,     /* USG end at 150 */
+        #ff0000 50%,     /* Unhealthy - Red */
+        #ff0000 66.67%,  /* Unhealthy end at 200 */
+        #8f3f97 66.67%,  /* Very Unhealthy - Purple */
+        #8f3f97 100%     /* Very Unhealthy end at 300 */
     );
     opacity: 0.9;
 }
@@ -75,7 +77,7 @@
 
 .aqi-spectrum-labels {
     width: 200px;
-    margin: 1px auto 5px auto;
+    margin: 1px auto 7px auto;
     display: flex;
     justify-content: space-between;
     font-size: 10px;

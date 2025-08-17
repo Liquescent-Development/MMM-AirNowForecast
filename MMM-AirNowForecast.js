@@ -191,8 +191,8 @@ Module.register("MMM-AirNowForecast", {
         if (worstCurrent && worstCurrent.AQI) {
             const indicator = document.createElement("div");
             indicator.className = "aqi-spectrum-indicator";
-            // Position based on AQI value (0-200 scale)
-            const position = Math.min((worstCurrent.AQI / 200) * 100, 100);
+            // Position based on AQI value (0-300 scale)
+            const position = Math.min((worstCurrent.AQI / 300) * 100, 100);
             indicator.style.left = `${position}%`;
             spectrumContainer.appendChild(indicator);
         }
@@ -207,7 +207,8 @@ Module.register("MMM-AirNowForecast", {
             <span>50</span>
             <span>100</span>
             <span>150</span>
-            <span>200+</span>
+            <span>200</span>
+            <span>300+</span>
         `;
         wrapper.appendChild(labels);
 
