@@ -1,0 +1,26 @@
+{
+  "name": "mmm-airnowforecast",
+  "version": "1.0.0",
+  "description": "Magic Mirror module for displaying air quality data from AirNow.gov",
+  "main": "MMM-AirNowForecast.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Liquescent-Development/MMM-AirNowForecast"
+  },
+  "keywords": [
+    "magic-mirror",
+    "magic-mirror-module",
+    "air-quality",
+    "aqi",
+    "airnow",
+    "pollution"
+  ],
+  "author": "Liquescent",
+  "license": "MIT",
+  "dependencies": {
+    "node-fetch": "^2.6.7"
+  }
+}

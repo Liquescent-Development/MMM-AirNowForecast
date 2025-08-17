@@ -1,0 +1,197 @@
+.aqi-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 16px;
+    line-height: 1.5;
+    width: 100%;
+}
+
+/* Top row with icon, title, value and status - centered */
+.aqi-current {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.aqi-icon {
+    font-size: 18px;
+    opacity: 0.6;
+}
+
+.aqi-label {
+    opacity: 0.8;
+    margin-right: 4px;
+    color: #999;
+}
+
+.aqi-value {
+    font-weight: 400;
+    font-size: 18px;
+    margin-right: 8px;
+}
+
+.aqi-status {
+    font-size: 14px;
+    opacity: 0.8;
+}
+
+/* AQI gradient bar */
+.aqi-spectrum-container {
+    width: 200px;
+    margin: 8px auto 2px auto;
+    position: relative;
+}
+
+.aqi-spectrum-bar {
+    height: 8px;
+    border-radius: 4px;
+    background: linear-gradient(to right, 
+        #00e400 0%,      /* Good - Green */
+        #00e400 10%,     /* Good end at 50 */
+        #ffff00 10%,     /* Moderate - Yellow */
+        #ffff00 20%,     /* Moderate end at 100 */
+        #ff7e00 20%,     /* USG - Orange */
+        #ff7e00 30%,     /* USG end at 150 */
+        #ff0000 30%,     /* Unhealthy - Red */
+        #ff0000 40%,     /* Unhealthy end at 200 */
+        #8f3f97 40%,     /* Very Unhealthy - Purple */
+        #8f3f97 60%,     /* Very Unhealthy end at 300 */
+        #7e0023 60%,     /* Hazardous - Maroon */
+        #7e0023 100%     /* Hazardous end at 500 */
+    );
+    opacity: 0.9;
+}
+
+.aqi-spectrum-indicator {
+    position: absolute;
+    top: -2px;
+    width: 0;
+    height: 0;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 6px solid #fff;
+    transform: translateX(-50%);
+    transition: left 0.3s ease;
+}
+
+.aqi-spectrum-labels {
+    width: 200px;
+    margin: 1px auto 12px auto;
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+    opacity: 1;
+    color: #666;
+}
+
+/* Current pollutant values (horizontal like UV hourly) */
+.aqi-pollutants {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 20px;
+    width: auto;
+    margin-top: 0;
+    margin-bottom: 4px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    border-top: 1px solid #666;
+    border-bottom: 1px solid #666;
+}
+
+.aqi-pollutant-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    min-width: 35px;
+}
+
+.aqi-pollutant-name {
+    font-size: 14px;
+    opacity: 1;
+    color: #999;
+}
+
+.aqi-pollutant-value {
+    font-size: 16px;
+    font-weight: 400;
+}
+
+/* 5-day forecast */
+.aqi-forecast {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 20px;
+    width: auto;
+    margin-top: 8px;
+    padding-top: 0;
+}
+
+.aqi-forecast-day {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    font-size: 14px;
+    min-width: 35px;
+}
+
+.aqi-forecast-label {
+    font-size: 14px;
+    opacity: 1;
+    color: #999;
+    text-align: center;
+}
+
+.aqi-forecast-value {
+    font-size: 16px;
+    font-weight: 400;
+}
+
+/* Location */
+.aqi-location {
+    text-align: center;
+    font-size: 11px;
+    color: #999;
+    opacity: 0.7;
+    margin-bottom: 8px;
+}
+
+.aqi-location .fa {
+    margin-right: 2px;
+    font-size: 10px;
+}
+
+/* AQI color classes */
+.aqi-good {
+    color: #00e400;
+}
+
+.aqi-moderate {
+    color: #ffff00;
+}
+
+.aqi-usg {
+    color: #ff7e00;
+}
+
+.aqi-unhealthy {
+    color: #ff0000;
+}
+
+.aqi-very-unhealthy {
+    color: #8f3f97;
+}
+
+.aqi-hazardous {
+    color: #7e0023;
+}
+
+.aqi-unavailable {
+    color: #999999;
+}
