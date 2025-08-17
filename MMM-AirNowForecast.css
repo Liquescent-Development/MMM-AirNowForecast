@@ -1,0 +1,90 @@
+.mmm-airnow-wrapper {
+    padding: 10px 0;
+}
+
+.airnow-location {
+    margin-bottom: 10px;
+    opacity: 0.8;
+}
+
+.airnow-location .fa {
+    margin-right: 5px;
+}
+
+.airnow-current,
+.airnow-forecast {
+    margin-bottom: 10px;
+}
+
+.airnow-separator {
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    margin: 10px 0;
+}
+
+.airnow-forecast-header {
+    margin-bottom: 5px;
+    opacity: 0.8;
+}
+
+.airnow-row {
+    display: flex;
+    align-items: center;
+    padding: 2px 0;
+    min-height: 24px;
+}
+
+.airnow-pollutant {
+    flex: 0 0 80px;
+    text-align: left;
+    margin-right: 15px;
+}
+
+.airnow-value {
+    flex: 0 0 45px;
+    text-align: right;
+    margin-right: 15px;
+}
+
+.airnow-status {
+    display: flex;
+    align-items: center;
+    flex: 1;
+}
+
+.airnow-dot {
+    font-size: 18px;
+    margin-right: 8px;
+    line-height: 1;
+}
+
+.airnow-category {
+    opacity: 0.8;
+}
+
+.aqi-good {
+    color: #00e400;
+}
+
+.aqi-moderate {
+    color: #ffff00;
+}
+
+.aqi-usg {
+    color: #ff7e00;
+}
+
+.aqi-unhealthy {
+    color: #ff0000;
+}
+
+.aqi-very-unhealthy {
+    color: #8f3f97;
+}
+
+.aqi-hazardous {
+    color: #7e0023;
+}
+
+.aqi-unavailable {
+    color: #999999;
+}
