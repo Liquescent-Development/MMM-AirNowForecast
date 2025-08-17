@@ -74,10 +74,10 @@
 }
 
 .aqi-spectrum-labels {
+    width: 200px;
+    margin: 2px auto 12px auto;
     display: flex;
     justify-content: space-between;
-    margin-top: 4px;
-    margin-bottom: 10px;
     font-size: 10px;
     opacity: 1;
     color: #666;
