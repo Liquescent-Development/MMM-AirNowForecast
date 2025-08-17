@@ -2,15 +2,19 @@
 
 A [MagicMirror²](https://magicmirror.builders/) module that displays real-time air quality information from [AirNow.gov](https://www.airnow.gov/).
 
+![MMM-AirNowForecast Screenshot](mmm-airnowforecast.png)
+
 ## Features
 
 - Display current air quality index (AQI) for multiple pollutants
-- Show air quality forecasts
-- Color-coded indicators based on AQI categories
-- Configurable pollutant display (Ozone, PM2.5, PM10)
+- Show 5-day air quality forecast with worst pollutant per day
+- Full EPA AQI scale (0-500) with color-coded gradient bar
+- Visual indicator showing current AQI position on scale
+- Color-coded values based on AQI categories (Good to Hazardous)
+- Configurable pollutant display (O3/Ozone, PM2.5, PM10)
 - Location-based reporting with city/state display
 - Automatic data caching to respect API rate limits
-- Clean, minimal design that matches other MM modules
+- Clean, minimal design matching UV Index module style
 
 ## Installation
 
@@ -104,7 +108,7 @@ The module displays color-coded indicators based on EPA AQI categories:
 - 🟠 **Unhealthy for Sensitive Groups** (101-150): Orange
 - 🔴 **Unhealthy** (151-200): Red
 - 🟣 **Very Unhealthy** (201-300): Purple
-- 🟤 **Hazardous** (301+): Maroon
+- 🟤 **Hazardous** (301-500): Maroon
 
 ## API Information
 
