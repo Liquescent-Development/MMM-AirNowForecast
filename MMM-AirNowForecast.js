@@ -141,7 +141,7 @@ Module.register("MMM-AirNowForecast", {
 
         if (this.config.showLocation && (this.currentData || this.forecastData)) {
             const locationDiv = document.createElement("div");
-            locationDiv.className = "airnow-location light small";
+            locationDiv.className = "airnow-location";
             const locationData = this.currentData || this.forecastData;
             const reportingArea = locationData[0]?.ReportingArea || "Unknown";
             const stateCode = locationData[0]?.StateCode || "";
@@ -166,7 +166,7 @@ Module.register("MMM-AirNowForecast", {
             const forecastDiv = this.createDataDisplay(this.forecastData, "forecast");
             if (forecastDiv) {
                 const forecastHeader = document.createElement("div");
-                forecastHeader.className = "airnow-forecast-header light small";
+                forecastHeader.className = "airnow-forecast-header";
                 forecastHeader.innerHTML = "Forecast";
                 wrapper.appendChild(forecastHeader);
                 wrapper.appendChild(forecastDiv);
@@ -186,6 +186,12 @@ Module.register("MMM-AirNowForecast", {
             return null;
         }
 
+        if (type === "forecast") {
+            // For forecast, group by date and show worst pollutant
+            return this.createForecastDisplay(data);
+        }
+
+        // For current data, show all pollutants
         const filteredData = data.filter(item => {
             // Check if item has required properties
             if (!item || !item.ParameterName) {
@@ -205,7 +211,7 @@ Module.register("MMM-AirNowForecast", {
             row.className = "airnow-row";
 
             const pollutantSpan = document.createElement("span");
-            pollutantSpan.className = "airnow-pollutant light";
+            pollutantSpan.className = "airnow-pollutant";
             // Use display name if available, otherwise use the API parameter name
             const displayName = this.pollutantDisplayNames[item.ParameterName] || item.ParameterName || "Unknown";
             pollutantSpan.innerHTML = displayName;
@@ -227,7 +233,7 @@ Module.register("MMM-AirNowForecast", {
             statusSpan.appendChild(statusDot);
 
             const statusText = document.createElement("span");
-            statusText.className = "airnow-category light small";
+            statusText.className = "airnow-category";
             const categoryName = item.Category?.Name || "";
             statusText.innerHTML = categoryName;
             statusSpan.appendChild(statusText);
@@ -237,6 +243,99 @@ Module.register("MMM-AirNowForecast", {
         });
 
         return container;
+    },
+
+    createForecastDisplay: function(data) {
+        const container = document.createElement("div");
+        container.className = "airnow-forecast";
+
+        // Group forecast data by date
+        const forecastByDate = {};
+        
+        data.forEach(item => {
+            if (!item || !item.DateForecast || !item.ParameterName) return;
+            if (!this.config.pollutants.includes(item.ParameterName)) return;
+            
+            const date = item.DateForecast;
+            if (!forecastByDate[date]) {
+                forecastByDate[date] = [];
+            }
+            forecastByDate[date].push(item);
+        });
+
+        // Get sorted dates (today and next few days)
+        const dates = Object.keys(forecastByDate).sort();
+        const today = new Date().toISOString().split('T')[0];
+        
+        // Show up to 3 days of forecast
+        dates.slice(0, 3).forEach(date => {
+            const dayData = forecastByDate[date];
+            
+            // Find the worst (highest AQI) pollutant for this day
+            let worstItem = dayData.reduce((worst, item) => {
+                const aqi = item.AQI !== undefined && item.AQI !== -1 ? item.AQI : 0;
+                const worstAqi = worst.AQI !== undefined && worst.AQI !== -1 ? worst.AQI : 0;
+                return aqi > worstAqi ? item : worst;
+            }, dayData[0]);
+
+            const row = document.createElement("div");
+            row.className = "airnow-row";
+
+            // Add day label
+            const daySpan = document.createElement("span");
+            daySpan.className = "airnow-forecast-day";
+            const dayName = this.getDayName(date, today);
+            daySpan.innerHTML = dayName;
+            row.appendChild(daySpan);
+
+            const pollutantSpan = document.createElement("span");
+            pollutantSpan.className = "airnow-pollutant";
+            const displayName = this.pollutantDisplayNames[worstItem.ParameterName] || worstItem.ParameterName;
+            pollutantSpan.innerHTML = displayName;
+            row.appendChild(pollutantSpan);
+
+            const valueSpan = document.createElement("span");
+            valueSpan.className = "airnow-value bright";
+            const value = (worstItem.AQI !== undefined && worstItem.AQI !== -1) ? worstItem.AQI : "N/A";
+            valueSpan.innerHTML = this.config.roundValue && value !== "N/A" ? 
+                Math.round(value) : value;
+            row.appendChild(valueSpan);
+
+            const statusSpan = document.createElement("span");
+            statusSpan.className = "airnow-status";
+            const statusDot = document.createElement("span");
+            const categoryNumber = worstItem.Category?.Number;
+            statusDot.className = `airnow-dot ${this.getAQIClass(categoryNumber)}`;
+            statusDot.innerHTML = "●";
+            statusSpan.appendChild(statusDot);
+
+            const statusText = document.createElement("span");
+            statusText.className = "airnow-category";
+            const categoryName = worstItem.Category?.Name || "";
+            statusText.innerHTML = categoryName;
+            statusSpan.appendChild(statusText);
+
+            row.appendChild(statusSpan);
+            container.appendChild(row);
+        });
+
+        return container.children.length > 0 ? container : null;
+    },
+
+    getDayName: function(dateStr, todayStr) {
+        if (dateStr === todayStr) return "Today";
+        
+        const date = new Date(dateStr + 'T12:00:00');
+        const today = new Date(todayStr + 'T12:00:00');
+        const tomorrow = new Date(today);
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        
+        if (date.toISOString().split('T')[0] === tomorrow.toISOString().split('T')[0]) {
+            return "Tmrw";
+        }
+        
+        const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+        return days[date.getDay()];
     },
 
     getAQIClass: function(categoryNumber) {

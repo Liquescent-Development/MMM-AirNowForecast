@@ -162,12 +162,8 @@ module.exports = NodeHelper.create({
                     Log.log(this.name + ": Sample forecast item: " + JSON.stringify(data[0]));
                 }
                 
-                const today = new Date().toISOString().split('T')[0];
-                const todaysForecast = data.filter(item => 
-                    item.dateForecast === today
-                );
-                
-                return todaysForecast.length > 0 ? todaysForecast : data;
+                // Return all forecast data, let the display logic handle filtering
+                return data;
             })
             .catch(error => {
                 Log.error(this.name + ": Error fetching forecast: " + error.message);

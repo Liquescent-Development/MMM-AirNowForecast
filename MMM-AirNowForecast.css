@@ -1,48 +1,54 @@
 .mmm-airnow-wrapper {
-    padding: 10px 0;
+    font-size: 14px;
+    line-height: 1.5;
 }
 
 .airnow-location {
-    margin-bottom: 10px;
-    opacity: 0.8;
+    margin-bottom: 2px;
+    opacity: 0.6;
+    font-size: 12px;
 }
 
 .airnow-location .fa {
-    margin-right: 5px;
+    margin-right: 3px;
 }
 
 .airnow-current,
 .airnow-forecast {
-    margin-bottom: 10px;
+    margin-bottom: 2px;
 }
 
 .airnow-separator {
-    border-top: 1px solid rgba(255, 255, 255, 0.2);
-    margin: 10px 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    margin: 2px 0;
 }
 
 .airnow-forecast-header {
-    margin-bottom: 5px;
-    opacity: 0.8;
+    margin-top: 4px;
+    margin-bottom: 2px;
+    opacity: 0.6;
+    font-size: 12px;
 }
 
 .airnow-row {
     display: flex;
     align-items: center;
-    padding: 2px 0;
-    min-height: 24px;
+    line-height: 1.2;
+    padding: 1px 0;
 }
 
 .airnow-pollutant {
-    flex: 0 0 80px;
+    flex: 0 0 50px;
     text-align: left;
-    margin-right: 15px;
+    margin-right: 10px;
+    font-size: 13px;
 }
 
 .airnow-value {
-    flex: 0 0 45px;
+    flex: 0 0 30px;
     text-align: right;
-    margin-right: 15px;
+    margin-right: 10px;
+    font-size: 13px;
 }
 
 .airnow-status {
@@ -52,12 +58,21 @@
 }
 
 .airnow-dot {
-    font-size: 18px;
-    margin-right: 8px;
+    font-size: 12px;
+    margin-right: 5px;
     line-height: 1;
 }
 
 .airnow-category {
+    opacity: 0.6;
+    font-size: 12px;
+}
+
+.airnow-forecast-day {
+    flex: 0 0 35px;
+    text-align: left;
+    margin-right: 10px;
+    font-size: 13px;
     opacity: 0.8;
 }
 
