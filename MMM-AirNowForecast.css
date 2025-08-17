@@ -50,15 +50,17 @@
     border-radius: 4px;
     background: linear-gradient(to right, 
         #00e400 0%,      /* Good - Green */
-        #00e400 16.67%,  /* Good end at 50 */
-        #ffff00 16.67%,  /* Moderate - Yellow */
-        #ffff00 33.33%,  /* Moderate end at 100 */
-        #ff7e00 33.33%,  /* USG - Orange */
-        #ff7e00 50%,     /* USG end at 150 */
-        #ff0000 50%,     /* Unhealthy - Red */
-        #ff0000 66.67%,  /* Unhealthy end at 200 */
-        #8f3f97 66.67%,  /* Very Unhealthy - Purple */
-        #8f3f97 100%     /* Very Unhealthy end at 300 */
+        #00e400 10%,     /* Good end at 50 */
+        #ffff00 10%,     /* Moderate - Yellow */
+        #ffff00 20%,     /* Moderate end at 100 */
+        #ff7e00 20%,     /* USG - Orange */
+        #ff7e00 30%,     /* USG end at 150 */
+        #ff0000 30%,     /* Unhealthy - Red */
+        #ff0000 40%,     /* Unhealthy end at 200 */
+        #8f3f97 40%,     /* Very Unhealthy - Purple */
+        #8f3f97 60%,     /* Very Unhealthy end at 300 */
+        #7e0023 60%,     /* Hazardous - Maroon */
+        #7e0023 100%     /* Hazardous end at 500 */
     );
     opacity: 0.9;
 }
@@ -77,7 +79,7 @@
 
 .aqi-spectrum-labels {
     width: 200px;
-    margin: 1px auto 8px auto;
+    margin: 1px auto 12px auto;
     display: flex;
     justify-content: space-between;
     font-size: 10px;
@@ -93,7 +95,7 @@
     gap: 20px;
     width: auto;
     margin-top: 0;
-    margin-bottom: 6px;
+    margin-bottom: 4px;
     padding-top: 8px;
     padding-bottom: 8px;
     border-top: 1px solid #666;
