@@ -1,81 +1,153 @@
-.mmm-airnow-wrapper {
-    font-size: 14px;
-    line-height: 1.5;
+.aqi-wrapper {
+    font-family: "Roboto Condensed", sans-serif;
+    padding: 10px 0;
 }
 
-.airnow-location {
-    margin-bottom: 2px;
-    opacity: 0.6;
-    font-size: 12px;
-}
-
-.airnow-location .fa {
-    margin-right: 3px;
-}
-
-.airnow-current,
-.airnow-forecast {
-    margin-bottom: 2px;
-}
-
-.airnow-separator {
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    margin: 2px 0;
-}
-
-.airnow-forecast-header {
-    margin-top: 4px;
-    margin-bottom: 2px;
-    opacity: 0.6;
-    font-size: 12px;
-}
-
-.airnow-row {
+/* Top row with title and main value */
+.aqi-top-row {
     display: flex;
-    align-items: center;
-    line-height: 1.2;
-    padding: 1px 0;
+    align-items: baseline;
+    margin-bottom: 10px;
+    font-size: 20px;
 }
 
-.airnow-pollutant {
-    flex: 0 0 50px;
-    text-align: left;
-    margin-right: 10px;
-    font-size: 13px;
+.aqi-title {
+    color: #999;
+    margin-right: 20px;
 }
 
-.airnow-value {
-    flex: 0 0 30px;
-    text-align: right;
-    margin-right: 10px;
-    font-size: 13px;
+.aqi-title .fa {
+    margin-right: 5px;
 }
 
-.airnow-status {
+.aqi-value {
+    font-size: 36px;
+    font-weight: 300;
+    margin-right: 20px;
+}
+
+.aqi-status {
+    font-size: 20px;
+    font-weight: 300;
+}
+
+/* AQI gradient bar */
+.aqi-gradient-container {
+    position: relative;
+    margin-bottom: 5px;
+}
+
+.aqi-gradient {
+    height: 20px;
+    border-radius: 10px;
+    background: linear-gradient(to right, 
+        #00e400 0%,      /* Good - Green */
+        #00e400 16.66%,  /* Good end */
+        #ffff00 16.66%,  /* Moderate - Yellow */
+        #ffff00 33.33%,  /* Moderate end */
+        #ff7e00 33.33%,  /* USG - Orange */
+        #ff7e00 50%,     /* USG end */
+        #ff0000 50%,     /* Unhealthy - Red */
+        #ff0000 66.66%,  /* Unhealthy end */
+        #8f3f97 66.66%,  /* Very Unhealthy - Purple */
+        #8f3f97 83.33%,  /* Very Unhealthy end */
+        #7e0023 83.33%,  /* Hazardous - Maroon */
+        #7e0023 100%     /* Hazardous end */
+    );
+}
+
+.aqi-marker {
+    position: absolute;
+    top: -8px;
+    font-size: 16px;
+    color: white;
+    transform: translateX(-50%);
+    text-shadow: 0 0 3px rgba(0,0,0,0.8);
+}
+
+/* Scale labels */
+.aqi-scale-labels {
     display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: #666;
+    margin-bottom: 15px;
+}
+
+/* Current pollutant values row */
+.aqi-current-row {
+    display: flex;
+    justify-content: center;
     align-items: center;
+    margin-bottom: 15px;
+    padding-top: 10px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+.aqi-pollutant-group {
+    text-align: center;
+    margin: 0 15px;
+}
+
+.aqi-pollutant-value {
+    font-size: 24px;
+    font-weight: 300;
+    margin-bottom: 2px;
+}
+
+.aqi-pollutant-name {
+    font-size: 11px;
+    color: #999;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.aqi-spacer {
+    width: 1px;
+    height: 40px;
+    background: rgba(255,255,255,0.1);
+    margin: 0 15px;
+}
+
+/* 5-day forecast */
+.aqi-forecast-container {
+    display: flex;
+    justify-content: space-around;
+    padding-top: 10px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+.aqi-day-group {
+    text-align: center;
     flex: 1;
 }
 
-.airnow-dot {
-    font-size: 12px;
-    margin-right: 5px;
-    line-height: 1;
-}
-
-.airnow-category {
-    opacity: 0.6;
-    font-size: 12px;
-}
-
-.airnow-forecast-day {
-    flex: 0 0 35px;
-    text-align: left;
-    margin-right: 10px;
+.aqi-day-name {
     font-size: 13px;
-    opacity: 0.8;
+    color: #999;
+    margin-bottom: 5px;
 }
 
+.aqi-day-value {
+    font-size: 20px;
+    font-weight: 300;
+}
+
+/* Location */
+.aqi-location {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 13px;
+    color: #999;
+    opacity: 0.7;
+}
+
+.aqi-location .fa {
+    margin-right: 3px;
+}
+
+/* AQI color classes */
 .aqi-good {
     color: #00e400;
 }
