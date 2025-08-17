@@ -139,13 +139,19 @@ Module.register("MMM-AirNowForecast", {
             return wrapper;
         }
 
-        // Container for relative positioning (for location)
-        const container = document.createElement("div");
-        container.style.position = "relative";
-        container.style.width = "100%";
-
         // Get worst current AQI for main display
         const worstCurrent = this.getWorstPollutant(this.currentData);
+        
+        // Location (centered at top)
+        if (this.config.showLocation && (this.currentData || this.forecastData)) {
+            const locationDiv = document.createElement("div");
+            locationDiv.className = "aqi-location";
+            const locationData = this.currentData || this.forecastData;
+            const reportingArea = locationData[0]?.ReportingArea || "Unknown";
+            const stateCode = locationData[0]?.StateCode || "";
+            locationDiv.innerHTML = `<span class="fa fa-map-marker"></span> ${reportingArea}, ${stateCode}`;
+            wrapper.appendChild(locationDiv);
+        }
         
         // Top section with icon, label, value and status - centered like UV Index
         const currentDiv = document.createElement("div");
@@ -172,7 +178,7 @@ Module.register("MMM-AirNowForecast", {
             currentDiv.appendChild(status);
         }
 
-        container.appendChild(currentDiv);
+        wrapper.appendChild(currentDiv);
 
         // AQI spectrum bar (like UV spectrum bar)
         const spectrumContainer = document.createElement("div");
@@ -191,7 +197,7 @@ Module.register("MMM-AirNowForecast", {
             spectrumContainer.appendChild(indicator);
         }
 
-        container.appendChild(spectrumContainer);
+        wrapper.appendChild(spectrumContainer);
 
         // Scale labels
         const labels = document.createElement("div");
@@ -203,7 +209,7 @@ Module.register("MMM-AirNowForecast", {
             <span>150</span>
             <span>200+</span>
         `;
-        container.appendChild(labels);
+        wrapper.appendChild(labels);
 
         // Current pollutants (horizontal like UV hourly)
         if (this.currentData) {
@@ -218,20 +224,20 @@ Module.register("MMM-AirNowForecast", {
                 const pollutantItem = document.createElement("div");
                 pollutantItem.className = "aqi-pollutant-item";
                 
-                const value = document.createElement("div");
-                value.className = `aqi-pollutant-value ${this.getAQIClass(item.Category?.Number)}`;
-                value.innerHTML = item.AQI || "N/A";
-                pollutantItem.appendChild(value);
-
                 const name = document.createElement("div");
                 name.className = "aqi-pollutant-name";
                 name.innerHTML = this.pollutantDisplayNames[item.ParameterName] || item.ParameterName;
                 pollutantItem.appendChild(name);
 
+                const value = document.createElement("div");
+                value.className = `aqi-pollutant-value ${this.getAQIClass(item.Category?.Number)}`;
+                value.innerHTML = item.AQI || "N/A";
+                pollutantItem.appendChild(value);
+
                 pollutantsDiv.appendChild(pollutantItem);
             });
 
-            container.appendChild(pollutantsDiv);
+            wrapper.appendChild(pollutantsDiv);
         }
 
         // 5-day forecast (like UV daily forecast)
@@ -264,21 +270,9 @@ Module.register("MMM-AirNowForecast", {
                 }
             });
 
-            container.appendChild(forecastDiv);
+            wrapper.appendChild(forecastDiv);
         }
 
-        // Location (positioned absolutely in top-right)
-        if (this.config.showLocation && (this.currentData || this.forecastData)) {
-            const locationDiv = document.createElement("div");
-            locationDiv.className = "aqi-location";
-            const locationData = this.currentData || this.forecastData;
-            const reportingArea = locationData[0]?.ReportingArea || "Unknown";
-            const stateCode = locationData[0]?.StateCode || "";
-            locationDiv.innerHTML = `<span class="fa fa-map-marker"></span> ${reportingArea}, ${stateCode}`;
-            container.appendChild(locationDiv);
-        }
-
-        wrapper.appendChild(container);
         return wrapper;
     },
 
