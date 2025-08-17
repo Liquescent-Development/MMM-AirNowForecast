@@ -7,7 +7,7 @@ Module.register("MMM-AirNowForecast", {
         updateInterval: 3600000,
         showForecast: true,
         showCurrent: true,
-        pollutants: ["OZONE", "PM2.5", "PM10"],
+        pollutants: ["O3", "PM2.5", "PM10"],  // Use API parameter names
         animationSpeed: 1000,
         initialLoadDelay: 0,
         retryDelay: 2500,
@@ -15,6 +15,16 @@ Module.register("MMM-AirNowForecast", {
         showLocation: true,
         roundValue: true,
         language: config.language || "en"
+    },
+
+    // Map API parameter names to display names
+    pollutantDisplayNames: {
+        "O3": "OZONE",
+        "PM2.5": "PM2.5",
+        "PM10": "PM10",
+        "CO": "CO",
+        "NO2": "NO2",
+        "SO2": "SO2"
     },
 
     currentData: null,
@@ -133,8 +143,8 @@ Module.register("MMM-AirNowForecast", {
             const locationDiv = document.createElement("div");
             locationDiv.className = "airnow-location light small";
             const locationData = this.currentData || this.forecastData;
-            const reportingArea = locationData[0]?.reportingArea || "Unknown";
-            const stateCode = locationData[0]?.stateCode || "";
+            const reportingArea = locationData[0]?.ReportingArea || "Unknown";
+            const stateCode = locationData[0]?.StateCode || "";
             locationDiv.innerHTML = `<span class="fa fa-map-marker"></span> ${reportingArea}${stateCode ? ", " + stateCode : ""}`;
             wrapper.appendChild(locationDiv);
         }
@@ -178,11 +188,12 @@ Module.register("MMM-AirNowForecast", {
 
         const filteredData = data.filter(item => {
             // Check if item has required properties
-            if (!item || !item.parameterName) {
-                Log.warn(this.name + ": Skipping item with missing parameterName");
+            if (!item || !item.ParameterName) {
+                Log.warn(this.name + ": Skipping item with missing ParameterName");
                 return false;
             }
-            return this.config.pollutants.includes(item.parameterName.toUpperCase());
+            // Check if this pollutant is in our configured list
+            return this.config.pollutants.includes(item.ParameterName);
         });
 
         if (filteredData.length === 0) {
@@ -195,12 +206,14 @@ Module.register("MMM-AirNowForecast", {
 
             const pollutantSpan = document.createElement("span");
             pollutantSpan.className = "airnow-pollutant light";
-            pollutantSpan.innerHTML = item.parameterName || "Unknown";
+            // Use display name if available, otherwise use the API parameter name
+            const displayName = this.pollutantDisplayNames[item.ParameterName] || item.ParameterName || "Unknown";
+            pollutantSpan.innerHTML = displayName;
             row.appendChild(pollutantSpan);
 
             const valueSpan = document.createElement("span");
             valueSpan.className = "airnow-value bright";
-            const value = (item.aqi !== undefined && item.aqi !== -1) ? item.aqi : "N/A";
+            const value = (item.AQI !== undefined && item.AQI !== -1) ? item.AQI : "N/A";
             valueSpan.innerHTML = this.config.roundValue && value !== "N/A" ? 
                 Math.round(value) : value;
             row.appendChild(valueSpan);
@@ -208,13 +221,15 @@ Module.register("MMM-AirNowForecast", {
             const statusSpan = document.createElement("span");
             statusSpan.className = "airnow-status";
             const statusDot = document.createElement("span");
-            statusDot.className = `airnow-dot ${this.getAQIClass(item.categoryNumber)}`;
+            const categoryNumber = item.Category?.Number;
+            statusDot.className = `airnow-dot ${this.getAQIClass(categoryNumber)}`;
             statusDot.innerHTML = "●";
             statusSpan.appendChild(statusDot);
 
             const statusText = document.createElement("span");
             statusText.className = "airnow-category light small";
-            statusText.innerHTML = item.categoryName || "";
+            const categoryName = item.Category?.Name || "";
+            statusText.innerHTML = categoryName;
             statusSpan.appendChild(statusText);
 
             row.appendChild(statusSpan);

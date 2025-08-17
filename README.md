@@ -65,7 +65,7 @@ Add the following to your `config/config.js` file:
 | `updateInterval` | How often to fetch new data (milliseconds) | Number | `3600000` (1 hour) |
 | `showForecast` | Display forecast data | Boolean | `true` |
 | `showCurrent` | Display current conditions | Boolean | `true` |
-| `pollutants` | Which pollutants to display | Array | `["OZONE", "PM2.5", "PM10"]` |
+| `pollutants` | Which pollutants to display (use API names: O3, PM2.5, PM10, CO, NO2, SO2) | Array | `["O3", "PM2.5", "PM10"]` |
 | `showLocation` | Display the reporting area location | Boolean | `true` |
 | `roundValue` | Round AQI values to whole numbers | Boolean | `true` |
 | `animationSpeed` | DOM update animation speed (milliseconds) | Number | `1000` |
@@ -88,7 +88,7 @@ Add the following to your `config/config.js` file:
         updateInterval: 1800000, // 30 minutes
         showForecast: true,
         showCurrent: true,
-        pollutants: ["OZONE", "PM2.5"],
+        pollutants: ["O3", "PM2.5"],
         showLocation: true,
         roundValue: true
     }
